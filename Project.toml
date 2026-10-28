@@ -1,0 +1,6 @@
+
+name = "SolarEVCharging"
+uuid = "a5c2d891-7b34-4f61-9e82-3c6d1a8b5f20"
+version = "0.1.0"
+
+[deps]

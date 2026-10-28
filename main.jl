@@ -1,4 +1,5 @@
-
+include("src/SolarEVCharging.jl")
+using .SolarEVCharging
 # Solar EV Charging Calculator
 # Version 2: Interactive inputs and validation
 
@@ -81,9 +82,43 @@ end
 
 system_efficiency = system_efficiency_percent / 100
 
-# Step 5: Calculate the required energy
-energy_needed_kwh = battery_capacity_kwh *
-    (target_soc_percent - current_soc_percent) / 100
+
+# Calculate energy needed
+energy_needed_kwh = calculate_energy_needed(
+    battery_capacity_kwh,
+    current_soc_percent,
+    target_soc_percent
+)
+
+# Calculate daily energy per panel
+energy_per_panel_kwh = calculate_panel_energy(
+    panel_power_kw,
+    sunlight_hours_per_day,
+    system_efficiency
+)
+
+# Calculate panel count
+panels_required = calculate_panels_required(
+    energy_needed_kwh,
+    energy_per_panel_kwh
+)
+
+# Calculate array power
+array_power = calculate_array_power(
+    panels_required,
+    panel_power_kw,
+    system_efficiency
+)
+
+total_solar_power_kw = array_power.rated
+effective_solar_power_kw = array_power.effective
+
+# Calculate idealized charging time
+charging_time_hours = calculate_charging_time(
+    energy_needed_kwh,
+    effective_solar_power_kw
+)
+
 
 # Step 6: Estimate energy generated per panel per day
 energy_per_panel_kwh = panel_power_kw *
